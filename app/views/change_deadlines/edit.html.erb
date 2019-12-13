@@ -1,0 +1,5 @@
+<h2>Edit request change deadline</h2>
+
+<%= form_for @request, url: edit_change_deadline_path do |f| %>
+  <%= render :partial => 'change_deadlines/form', :locals => {f: f, request: @request} %>
+<% end %>

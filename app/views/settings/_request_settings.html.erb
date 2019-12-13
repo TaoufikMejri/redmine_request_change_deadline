@@ -1,0 +1,17 @@
+<table>
+  <tbody>
+  <tr>
+    <th>Select custom field</th>
+    <td>
+      <% options = IssueCustomField.where("field_format='date' OR field_format='datetime'") %>
+      <% options_select = [] %>
+      <% options.each do |option|
+         options_select.push [option.name,option.id]
+         end %>
+      <%= select_tag "settings_custom_field", options_for_select(options_select),
+                     name: "settings[custom_field][]",
+                     value: "#{settings['custom_field']}" %>
+    </td>
+  </tr>
+  </tbody>
+</table>

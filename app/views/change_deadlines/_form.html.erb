@@ -1,0 +1,10 @@
+<%= f.label :reason, 'Reason of request' %>
+<%= f.text_field :reason %><br>
+<%= f.label :new_deadline, 'New deadline' %>
+<%= f.date_field :new_deadline %><br>
+<% if request.persisted? %>
+  <%= f.submit :value => "Update" %>
+<% else %>
+  <%= f.submit :value => "Save" %>
+<% end %>
+

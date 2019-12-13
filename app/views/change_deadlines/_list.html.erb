@@ -1,0 +1,70 @@
+<% query_options = nil unless defined?(query_options) %>
+<% query_options ||= {} %>
+
+<%= form_tag({}, :data => {:cm_url => ''}) do %>
+  <%= hidden_field_tag 'back_url', url_for(:params => request.query_parameters), :id => nil %>
+  <%= query_columns_hidden_tags(query) %>
+  <div class="autoscroll">
+    <table class="list issues odd-even <%= query.css_classes %>">
+      <thead>
+      <tr>
+        <% query.inline_columns.each do |column| %>
+          <%= column_header(query, column, query_options) %>
+        <% end %>
+        <% if User.current.allowed_to_globally?(:approve_requests) || User.current.allowed_to_globally?(:reject_requests) %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+      <% grouped_request_list(requests, query) do |request, level, group_name, group_count, group_totals| -%>
+        <% if group_name %>
+          <% reset_cycle %>
+          <tr class="group open">
+            <td colspan="<%= query.inline_columns.size + 2 %>">
+              <span class="expander" onclick="toggleRowGroup(this);">&nbsp;</span>
+              <span class="name"><%= group_name %></span> <span class="count"><%= group_count %></span> <span class="totals"><%= group_totals %></span>
+              <%= link_to_function("#{l(:button_collapse_all)}/#{l(:button_expand_all)}",
+                                   "toggleAllRowGroups(this)", :class => 'toggle-all') %>
+            </td>
+          </tr>
+        <% end %>
+        <% if request.status == "Approved" %>
+          <tr style="background-color: #bbf7c2;" id="issue-<%= request.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
+        <% elsif request.status == "Rejected" %>
+          <tr style="background-color: #ffbaba;" id="issue-<%= request.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
+        <% else %>
+          <tr id="issue-<%= request.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
+        <% end %>
+          <% query.inline_columns.each do |column| %>
+            <%= content_tag('td', column_content(column, request), :class => column.css_classes) %>
+          <% end %>
+          <% if request.status == "Approved" %>
+            <td></td>
+          <% elsif request.status == "Rejected" %>
+            <td></td>
+          <% else request.status == "Pending" %>
+            <% if User.current.allowed_to_globally?(:approve_requests, {}) || User.current.allowed_to_globally?(:reject_requests, {}) %>
+              <td><%= link_to "Approve", approve_request_path(request),  style: '' %> | <%= link_to "Reject", reject_request_path(request) %></td>
+            <% end %>
+          <% end %>
+        </tr>
+        <% query.block_columns.each do |column| %>
+          <% text = column_content(column, request) %>
+          <% if text.present? -%>
+          <tr class="<%= current_cycle %>">
+            <td colspan="<%= query.inline_columns.size + 2 %>" class="<%= column.css_classes %>">
+              <% if query.block_columns.count > 1 %>
+                <span><%= column.caption %></span>
+              <% end %>
+              <%= text %>
+            </td>
+          </tr>
+        <% end -%>
+      <% end -%>
+      <% end -%>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+

@@ -1,0 +1,7 @@
+# English strings go here for Rails i18n
+en:
+  button_change_deadline: "Change deadline"
+  new_request: "New request to change deadline"
+  field_reason: "Reason"
+  field_old_deadline: "Old deadline"
+  field_new_deadline: "New deadline"

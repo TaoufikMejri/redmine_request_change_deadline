@@ -1,0 +1,12 @@
+<h2>Request change deadline: <%= @request.id %></h2>
+
+<ul>
+  <li>issue_id: <%= @request.issue_id %></li>
+  <li>project_id: <%= @request.project_id %></li>
+  <li>reason: <%= @request.reason %></li>
+  <li>old_deadline: <%= @request.old_deadline %></li>
+  <li>new_deadline: <%= @request.new_deadline %></li>
+</ul>
+
+<%= link_to "Approve Request", approve_request_path %> |
+<%= link_to "Reject Request", reject_request_path %>

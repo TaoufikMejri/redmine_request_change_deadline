@@ -1,0 +1,18 @@
+<h2>Requests</h2>
+
+<%= form_tag(change_deadlines_path, :method => :get, :id => 'query_form') do %>
+  <%= render :partial => 'date_range' %>
+<% end %>
+
+<% if @query.valid? %>
+  <% if @requests.empty? %>
+    <p class="nodata">No data to display</p>
+  <% else %>
+    <%= render_query_totals(@query) %>
+    <%= render :partial => 'list', :locals => {:requests => @requests, :query => @query} %>
+    <span class="pagination"><%= pagination_links_full @request_pages, @request_count %></span>
+  <% end %>
+<% end %>
+
+<%= context_menu %>
+

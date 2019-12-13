@@ -1,0 +1,7 @@
+Requester : <%= user.firstname %> <%= user.lastname %>
+Issue(s):
+<% issues.each do |issue| %>
+  Issue_id : <%= issue.id %>
+<% end %>
+Project_id : <%= request.project_id %>
+Reason : <%= request.reason %>

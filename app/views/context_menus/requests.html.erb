@@ -1,0 +1,9 @@
+<ul>
+  <% if @request -%>
+    <li><%= context_menu_link l(:button_edit), edit_change_deadline_path(@request),
+                              :class => 'icon icon-edit' %></li>
+  <% end %>
+    <li><%= context_menu_link l(:button_delete), change_deadlines_path(:id => @request_ids, :back_url => @back),
+                            :method => :delete, :data => {:confirm => "Are you sure"}, :class => 'icon icon-del' %>
+  </li>
+</ul>

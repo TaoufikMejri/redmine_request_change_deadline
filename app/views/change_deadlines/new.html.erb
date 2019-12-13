@@ -1,0 +1,17 @@
+<h2><%= l('new_request') %></h2>
+
+<%= form_for @request, url: new_change_deadline_path, method: :post do |f| %>
+  <% @issues.each do |issue| %>
+    <p>
+      <span > <%= check_box_tag 'issue_ids[]', issue.id, true %></span>
+      <%= link_to_issue issue %>
+    </p>
+  <% end %>
+  <%= render partial: 'change_deadlines/form', locals: {f: f, request: @request} %>
+
+  <%#= f.label :reason, 'Reason of request' %>
+<!--  <%#= f.text_field :reason %><br>-->
+  <%#= f.label :new_deadline, 'New deadline' %>
+<!--  <%#= f.date_field :new_deadline %><br>-->
+  <%#= f.submit :value => "Save" %>
+<% end %>
