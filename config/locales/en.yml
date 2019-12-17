@@ -5,3 +5,5 @@ en:
   field_reason: "Reason"
   field_old_deadline: "Old deadline"
   field_new_deadline: "New deadline"
+  button_apply: "Apply"
+  button_save: "Save"

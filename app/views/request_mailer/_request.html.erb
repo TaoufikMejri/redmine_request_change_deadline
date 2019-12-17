@@ -1,7 +1,9 @@
+<h1><%= link_to("Request: #{request.id} / Reason: #{request.reason}", request_url) %></h1>
+
 Requester : <%= user.firstname %> <%= user.lastname %><br>
 Issue(s): <br>
 <% issues.each do |issue| %>
-  Issue_id : <%= issue.id %><br>
+  Issue_<%= issue.id %> : <%= link_to_issue request.issue %><br>
 <% end %>
-Project_id : <%= request.project_id %><br>
-Reason : <%= request.reason %><br>
+Project_<%= request.project_id %> : <%= link_to_project request.project %><br>
+Reason : <%= request.reason %>

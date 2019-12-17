@@ -1,7 +1,10 @@
+<%= "Request: #{request.id} / Reason: #{request.reason}" %>
+<%= request_url %>
+
 Requester : <%= user.firstname %> <%= user.lastname %>
 Issue(s):
 <% issues.each do |issue| %>
-  Issue_id : <%= issue.id %>
+  Issue_<%= issue.id %> : <%= issue_url issue.id %>
 <% end %>
-Project_id : <%= request.project_id %>
+Project_<%= request.project_id %> : <%= project_url request.project_id %>
 Reason : <%= request.reason %>
