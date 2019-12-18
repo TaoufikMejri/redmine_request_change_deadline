@@ -2,8 +2,11 @@
 en:
   button_change_deadline: "Change deadline"
   new_request: "New request to change deadline"
-  field_reason: "Reason"
+  field_reason: Request reason
   field_old_deadline: "Old deadline"
   field_new_deadline: "New deadline"
+  field_status: Request status
+  field_author: Author
+  field_requester: Requester
   button_apply: "Apply"
   button_save: "Save"

@@ -4,7 +4,8 @@
 <%= form_tag({}, :data => {:cm_url => ''}) do %>
   <%= hidden_field_tag 'back_url', url_for(:params => request.query_parameters), :id => nil %>
   <%= query_columns_hidden_tags(query) %>
-  <div class="autoscroll">
+<!--  <div class="autoscroll">-->
+  <div style="overflow-x:auto;">
     <table class="list issues odd-even <%= query.css_classes %>">
       <thead>
       <tr>
@@ -37,7 +38,7 @@
           <tr id="issue-<%= request.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
         <% end %>
           <% query.inline_columns.each do |column| %>
-            <%= content_tag('td', column_content(column, request), :class => column.css_classes) %>
+            <%= content_tag('td', change_deadline_column_content(column, request), :class => column.css_classes) %>
           <% end %>
           <% if request.status == "Approved" %>
             <td></td>
@@ -50,7 +51,7 @@
           <% end %>
         </tr>
         <% query.block_columns.each do |column| %>
-          <% text = column_content(column, request) %>
+          <% text = change_deadline_column_content(column, request) %>
           <% if text.present? -%>
           <tr class="<%= current_cycle %>">
             <td colspan="<%= query.inline_columns.size + 2 %>" class="<%= column.css_classes %>">
