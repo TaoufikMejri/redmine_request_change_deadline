@@ -1,10 +1,13 @@
 <h2>Request change deadline: <%= @request.id %></h2>
 
 <ul>
-  <li>issue_id: <%= @request.issue_id %></li>
-  <li>project_id: <%= @request.project_id %></li>
-  <li>reason: <%= @request.reason %></li>
-  <li>old_deadline: <%= @request.old_deadline %></li>
-  <li>new_deadline: <%= @request.new_deadline %></li>
+  <li>Issue: <%= link_to_issue(@request.issue) %></li>
+  <li>Priority: <%= @request.issue.priority %></li>
+  <li>Assignee: <%= @request.issue.assigned_to %></li>
+  <li>Project: <%= link_to_project(@request.project) %></li>
+  <li>Request reason: <%= @request.reason %></li>
+  <li>Old deadline: <%= @request.old_deadline %></li>
+  <li>New deadline: <%= @request.new_deadline %></li>
+  <li>Due date: <%= @request.issue.due_date %></li>
 </ul>
 

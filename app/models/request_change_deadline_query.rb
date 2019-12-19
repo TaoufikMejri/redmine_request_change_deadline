@@ -3,7 +3,7 @@ class RequestChangeDeadlineQuery < Query
 
   self.available_columns = [
       QueryColumn.new(:id, :sortable => "#{RequestChangeDeadline.table_name}.id", :groupable => true),
-      QueryColumn.new(:requester, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
+      QueryColumn.new(:user_id, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
       QueryColumn.new(:project, :sortable => "#{Project.table_name}.name", :groupable => true),
       QueryColumn.new( :issue, :sortable => "#{Issue.table_name}.subject", :groupable => true),
       QueryColumn.new(:reason, :sortable => "#{RequestChangeDeadline.table_name}.reason", :groupable => true),
@@ -11,12 +11,10 @@ class RequestChangeDeadlineQuery < Query
       QueryColumn.new(:old_deadline, :sortable => "#{RequestChangeDeadline.table_name}.old_deadline", :groupable => true),
       QueryColumn.new(:new_deadline, :sortable => "#{RequestChangeDeadline.table_name}.new_deadline", :groupable => true),
 
-  #issue query
       QueryColumn.new(:priority, :sortable => "#{IssuePriority.table_name}.position", :default_order => 'desc', :groupable => true),
       QueryColumn.new(:subject, :sortable => "#{Issue.table_name}.subject"),
       QueryColumn.new(:assigned_to, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
-      QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")}, :groupable => true),
-      QueryColumn.new(:done_ratio, :sortable => "#{Issue.table_name}.done_ratio", :groupable => true),
+      QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")}, :groupable => true)
   ]
 
   def available_columns
@@ -31,11 +29,12 @@ class RequestChangeDeadlineQuery < Query
   end
 
   def initialize_available_filters
-    add_available_filter"requester",
+    add_available_filter"user_id",
                         :type => :list,
-                        :values => requester_values
+                        :values => requester_values,
+                        :name => "Requester"
 
-    add_available_filter"project", :type => :text
+    add_available_filter"project_id", :type => :list, :values => project_values
 
     add_available_filter"issue_id", :type => :text
 
@@ -58,8 +57,6 @@ class RequestChangeDeadlineQuery < Query
 
     add_available_filter "author_id",
                        :type => :list, :values => author_values
-
-    add_available_filter "done_ratio", :type => :integer
 
   end
 
@@ -96,6 +93,19 @@ class RequestChangeDeadlineQuery < Query
     raise StatementInvalid.new(e.message)
   end
 
+  def sql_for_project_id_field(field, operator, value)
+    sql = '('
+    sql << sql_for_field(field, operator, value, Issue.table_name, 'project_id')
+    sql << ')'
+    sql
+  end
+
+  def sql_for_author_id_field(field, operator, value)
+    sql = '('
+    sql << sql_for_field(field, operator, value, Issue.table_name, 'author_id')
+    sql << ')'
+    sql
+  end
   private
 
   def requester_values
@@ -105,5 +115,6 @@ class RequestChangeDeadlineQuery < Query
     requester_values += users.sort_by(&:name).collect{|s| s.name }
     requester_values
   end
+
 
 end

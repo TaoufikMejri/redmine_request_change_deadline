@@ -16,5 +16,8 @@ Redmine::Plugin.register :redmine_request_change_deadline do
   permission :reject_requests, :change_deadlines => :reject_request
 
   settings :default => {'empty' => true}, :partial => 'settings/request_settings'
+end
 
+Rails.application.config.to_prepare do
+  QueriesController.send(:include, RedmineRequestChangeDeadline::QueriesControllerPatch)
 end

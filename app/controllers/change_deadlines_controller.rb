@@ -53,6 +53,7 @@ class ChangeDeadlinesController < ApplicationController
   end
 
   def show
+
   end
 
   def destroy

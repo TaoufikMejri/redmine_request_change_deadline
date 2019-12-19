@@ -4,8 +4,7 @@
 <%= form_tag({}, :data => {:cm_url => ''}) do %>
   <%= hidden_field_tag 'back_url', url_for(:params => request.query_parameters), :id => nil %>
   <%= query_columns_hidden_tags(query) %>
-<!--  <div class="autoscroll">-->
-  <div style="overflow-x:auto;">
+  <div class="autoscroll">
     <table class="list issues odd-even <%= query.css_classes %>">
       <thead>
       <tr>
@@ -21,7 +20,7 @@
       <% grouped_request_list(requests, query) do |request, level, group_name, group_count, group_totals| -%>
         <% if group_name %>
           <% reset_cycle %>
-          <tr class="group open">
+          <tr style="height: 10px;" class="group open">
             <td colspan="<%= query.inline_columns.size + 2 %>">
               <span class="expander" onclick="toggleRowGroup(this);">&nbsp;</span>
               <span class="name"><%= group_name %></span> <span class="count"><%= group_count %></span> <span class="totals"><%= group_totals %></span>
