@@ -1,0 +1,56 @@
+<% tag_name = (options[:name] || 'c') + '[]'%>
+<% tag_id = tag_name.gsub(/[\[\]]+/, '_').sub(/_+$/, '') %>
+<% available_tag_id = "available_#{tag_id}" %>
+<% selected_tag_id = "selected_#{tag_id}" %>
+
+<table class="filters-table">
+  <tr class="columns-container" id="columns" style="">
+    <td class="columns-heading"><label>Columns</label></td>
+    <td><table style="border-collapse: collapse; border:0; width: auto" class="columns">
+      <tbody><tr>
+        <td style="padding-left:0">
+          <%= select_tag 'available_columns',
+                         options_for_select(query_available_inline_columns_options(query)),
+                         :id => available_tag_id,
+                         :multiple => true, :size => 10,
+                         :ondblclick => "moveOptions(this.form.#{available_tag_id}, this.form.#{selected_tag_id});" %>
+        </td>
+        <td style="vertical-align: middle; text-align: center; width: 5%">
+          <input type="button" value="&#8594;" class="move-right"
+                 onclick="moveOptions(this.form.<%= available_tag_id %>, this.form.<%= selected_tag_id %>);" />
+          <input type="button" value="&#8592;" class="move-left"
+                 onclick="moveOptions(this.form.<%= selected_tag_id %>, this.form.<%= available_tag_id %>);" />   <td style="width: 45%">
+        <%= select_tag tag_name,
+                       options_for_select(query_selected_inline_columns_options(query)),
+                       :id => selected_tag_id,
+                       :multiple => true, :size => 10,
+                       :ondblclick => "moveOptions(this.form.#{selected_tag_id}, this.form.#{available_tag_id});" %>
+      </td>
+        <td style="vertical-align: middle; text-align: center; width: 5%">
+          <input type="button" value="&#8648;" onclick="moveOptionTop(this.form.<%= selected_tag_id %>);" />
+          <input type="button" value="&#8593;" onclick="moveOptionUp(this.form.<%= selected_tag_id %>);" />
+          <input type="button" value="&#8595;" onclick="moveOptionDown(this.form.<%= selected_tag_id %>);" />
+          <input type="button" value="&#8650;" onclick="moveOptionBottom(this.form.<%= selected_tag_id %>);" />    </td>
+      </tr>
+      </tbody></table>
+    </td>
+  </tr>
+  <% if @query.groupable_columns.any? %>
+    <tr>
+      <td class="field"><label for='group_by'><%= l(:field_group_by) %></label></td>
+      <td><%= group_by_column_select_tag(@query) %></td>
+    </tr>
+  <% end %>
+  <% if @query.available_block_columns.any? %>
+    <tr>
+      <td class="field"><%= l(:button_show) %></td>
+      <td><%= available_block_columns_tags(@query) %></td>
+    </tr>
+  <% end %>
+  <% if @query.available_totalable_columns.any? %>
+    <tr>
+      <td><%= l(:label_total_plural) %></td>
+      <td><%= available_totalable_columns_tags(@query) %></td>
+    </tr>
+  <% end %>
+</table>

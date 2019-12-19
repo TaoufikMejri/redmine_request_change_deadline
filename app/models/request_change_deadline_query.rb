@@ -94,16 +94,16 @@ class RequestChangeDeadlineQuery < Query
   end
 
   def sql_for_project_id_field(field, operator, value)
-    sql = '('
+    sql = "(issue_id IN ( SELECT #{Issue.table_name}.id FROM #{Issue.table_name} WHERE "
     sql << sql_for_field(field, operator, value, Issue.table_name, 'project_id')
-    sql << ')'
+    sql << ') )'
     sql
   end
 
   def sql_for_author_id_field(field, operator, value)
-    sql = '('
+    sql = "(issue_id IN ( SELECT #{Issue.table_name}.id FROM #{Issue.table_name} WHERE "
     sql << sql_for_field(field, operator, value, Issue.table_name, 'author_id')
-    sql << ')'
+    sql << ') )'
     sql
   end
   private

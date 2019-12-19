@@ -1,7 +1,7 @@
 <h2>Requests</h2>
 
 <%= form_tag(change_deadlines_path, :method => :get, :id => 'query_form') do %>
-  <%= render :partial => 'date_range' %>
+  <%= render :partial => 'change_deadlines/date_range', locals: {options: {}} %>
 <% end %>
 
 <% if @query.valid? %>
@@ -20,3 +20,8 @@
 
 <%= context_menu %>
 
+<style>
+  .collapsed#filters, .collapsed#filters_settings, .collapsed#custom_formatting, .collapsed#modal_selectorfilters, .collapsed#modal_selectorcustom_formatting, .collapsed#modal_selectorfilters_settings{
+    opacity: 1;
+  }
+</style>
