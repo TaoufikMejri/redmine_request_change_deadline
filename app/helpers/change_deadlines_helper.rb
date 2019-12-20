@@ -88,4 +88,28 @@ module ChangeDeadlinesHelper
     requests = [requests] unless requests.is_a?(Array)
     message = "Êtes-vous sûr de vouloir supprimer la ou les demandes(s) selectionnée(s) ?"
   end
+
+  def change_deadline_query_links(queries)
+    return '' if queries.empty?
+    # links to #index on issues/show
+    url_params = controller_name == 'change_deadlines' ? {:controller => 'change_deadlines', :action => 'index', :project_id => @project} : {}
+    ul_content_tag = content_tag('ul',
+                                 queries.collect {|query|
+                                   css = 'query'
+                                   css << ' selected' if query == @query
+                                   content_tag('li', link_to(query.name, url_params.merge(:query_id => query), :class => css))
+                                 }.join("\n").html_safe,
+                                 :class => 'queries')
+    content_tag(:div, ul_content_tag, class: 'module-content', id: '_user-easyquery_EasyIssueQuery_private')
+  end
+
+  def delete_link_query(url, options={})
+    options = {
+        :method => :delete,
+        :data => {:confirm => l(:text_are_you_sure)},
+        :class => 'icon icon-del button-negative'
+    }.merge(options)
+
+    link_to l(:button_delete), url, options
+  end
 end

@@ -12,3 +12,8 @@ en:
   button_save: Save
   button_edit: Edit
   field_user_id: User
+  #label_my_queries: "<a class='icon icon-filter button' href='/easy_query_management/EasyIssueQuery/edit'>My custom filters</a>"
+  label_my_queries_html: "<p class='icon icon-filter'>My custom filters</p>"
+  #label_my_queries_html: "<a class='icon icon-filter button' href='#'>My custom filters</a>"
+  button_approve: Approve
+  button_reject: Reject

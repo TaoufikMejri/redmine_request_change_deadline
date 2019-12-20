@@ -5,7 +5,7 @@ class RequestChangeDeadline < ActiveRecord::Base
   belongs_to :user
   belongs_to :issue
 
-  delegate :project, :due_date, :subject, :assigned_to, :author, :priority, to: :issue
+  delegate :project, :due_date, :subject, :assigned_to, :author, :priority, :done_ratio, to: :issue
 
   acts_as_customizable
 

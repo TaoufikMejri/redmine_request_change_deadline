@@ -45,8 +45,13 @@
             <td></td>
           <% else request.status == "Pending" %>
             <% if User.current.allowed_to_globally?(:approve_requests, {}) || User.current.allowed_to_globally?(:reject_requests, {}) %>
-              <td><%= link_to "Approve", approve_request_path(request),  style: '' %> | <%= link_to "Reject", reject_request_path(request) %></td>
-            <% end %>
+<!--              <td><%#= link_to "Approve", approve_request_path(request),  style: '' %> | <%#= link_to "Reject", reject_request_path(request) %></td>-->
+              <td>
+                <%= link_to l(:button_approve), approve_request_path(request), style: '', :class => 'button-positive' %>
+                <%= link_to l(:button_reject), reject_request_path(request), style: '', :class => 'clear-link button-negative' %>
+              </td>
+
+      <% end %>
           <% end %>
         </tr>
         <% query.block_columns.each do |column| %>

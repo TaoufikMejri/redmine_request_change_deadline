@@ -14,9 +14,16 @@
   <% end %>
 <% end %>
 
-<% content_for :sidebar do %>
-  <%= render :partial => 'sidebar' %>
-<% end %>
+<% content_for :sidebar do -%>
+  <div class="module box easy-issue-query saved-queries personal-filters  collapsible" data-toggle="_user-easyquery_EasyIssueQuery_private">
+    <div class="module-heading " onclick="EasyToggler.toggle(this.nextElementSibling, event)">
+      <span class="expander module-toggler"> </span>
+      <h3 class=" icon icon-filter">Custom filters</h3>
+    </div>
+      <% queries = sidebar_queries(RequestChangeDeadlineQuery, @project) %>
+      <%= change_deadline_query_links(queries) %>
+  </div>
+<% end -%>
 
 <%= context_menu %>
 

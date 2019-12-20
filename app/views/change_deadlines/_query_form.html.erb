@@ -53,7 +53,7 @@
     <% end %>
   <% else %>
     <% if @query.editable_by?(User.current) %>
-      <%= link_to "Editer", edit_query_path(@query), :class => 'icon icon-edit' %>
+      <%= link_to "Edit", edit_query_path(@query), :class => 'icon icon-edit' %>
       <%= delete_link query_path(@query) %>
     <% end %>
   <% end %>

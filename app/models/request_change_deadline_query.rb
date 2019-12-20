@@ -14,7 +14,9 @@ class RequestChangeDeadlineQuery < Query
       QueryColumn.new(:priority, :sortable => "#{IssuePriority.table_name}.position", :default_order => 'desc', :groupable => true),
       QueryColumn.new(:subject, :sortable => "#{Issue.table_name}.subject"),
       QueryColumn.new(:assigned_to, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
-      QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")}, :groupable => true)
+      QueryColumn.new(:author, :sortable => lambda {User.fields_for_order_statement("authors")}, :groupable => true),
+      QueryColumn.new(:done_ratio, :sortable => "#{Issue.table_name}.done_ratio", :groupable => true),
+
   ]
 
   def available_columns
@@ -58,10 +60,12 @@ class RequestChangeDeadlineQuery < Query
     add_available_filter "author_id",
                        :type => :list, :values => author_values
 
+    add_available_filter "done_ratio", :type => :integer
+
   end
 
   def default_columns_names
-    @default_columns_names = [:id, :project, :issue, :user, :reason,  :old_deadline, :new_deadline, :status]
+    @default_columns_names = [:id, :project, :issue, :user, :reason,  :old_deadline, :new_deadline, :status, :done_ratio]
   end
 
   def default_sort_criteria
@@ -96,6 +100,13 @@ class RequestChangeDeadlineQuery < Query
   def sql_for_project_id_field(field, operator, value)
     sql = "(issue_id IN ( SELECT #{Issue.table_name}.id FROM #{Issue.table_name} WHERE "
     sql << sql_for_field(field, operator, value, Issue.table_name, 'project_id')
+    sql << ') )'
+    sql
+  end
+
+  def sql_for_done_ratio_field(field, operator, value)
+    sql = "(issue_id IN ( SELECT #{Issue.table_name}.id FROM #{Issue.table_name} WHERE "
+    sql << sql_for_field(field, operator, value, Issue.table_name, 'done_ratio')
     sql << ') )'
     sql
   end

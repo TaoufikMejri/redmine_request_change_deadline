@@ -3,16 +3,13 @@
 <%= hidden_field_tag 'type', @query.type, :disabled => true, :id => 'query_type' %>
 <%= query_hidden_sort_tag(@query) %>
 
-
 <div id="query_form_content" class="easy-query-filter-container with-freetext">
 
   <div class="easy-query-heading">
     <div class="buttons contextual">
       <div class="filters open" id="easy-query-toggle-button-filters">
         <a href="javascript:void(0);">
-          <i class="icon-toggler"></i>
-          Filters            <span class="default-filter">              default</span>        </a>
-
+          <i class="icon-toggler"></i>Filters<span class="default-filter">default</span></a>
       </div>
       <script type="application/javascript">
           //<![CDATA[
@@ -23,11 +20,12 @@
               });
           }, 0);
           //]]>
-      </script>         <div class="settings" id="easy-query-toggle-button-settings">
-      <a href="javascript:void(0);">
-        <i class="icon-toggler"></i>
-        Options          </a>
-    </div>
+      </script>
+      <div class="settings" id="easy-query-toggle-button-settings">
+        <a href="javascript:void(0);">
+          <i class="icon-toggler"></i>
+          Options          </a>
+      </div>
       <script type="application/javascript">
           //<![CDATA[
           EasyGem.schedule.late(function(){
@@ -37,7 +35,8 @@
               });
           }, 0);
           //]]>
-      </script>    </div>
+      </script>
+    </div>
 
 
   </div>
@@ -48,14 +47,11 @@
       <div id="easyquery-filters" class="easyquery-filters">
         <div class="add-filter tabular">
           <p>
-            <label>Add filter:</label>
           <div id="query_form_with_buttons" class="hide-when-print">
             <div id="query_form_content">
-              <fieldset id="filters" class="collapsible <%= @query.new_record? ? "" : "collapsed" %>">
-                <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
-                <div style="<%= @query.new_record? ? "" : "display: none;" %>">
-                  <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
-                </div>
+              <div style="<%= @query.new_record? ? "" : "display: none;" %>">
+                <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
+              </div>
               </fieldset>
             </div>
           </div>
@@ -71,18 +67,26 @@
         <div class="list_settings output-settigs-box" data-output="list" style="">
           <%= render partial: 'column_query', locals: {query: @query, options: {}} %>
         </div>
-
       </div>
     </div>
   </div>
 
 
-
   <p id="filter_buttons" class="form-actions filter-buttons" style="display: block;">
     <%= link_to_function l(:button_apply), '$("#query_form").submit()', :class => 'icon icon-checked apply-link button-positive' %>
-
-    <a class="icon icon-reload clear-link button-negative" title="By clicking reload default filter" href="/change_deadlines?set_filter=0">Default filters</a>
-    <a href="#" onclick="EASY.query.applyFilters($('#query_form').attr('action'), '', $('#query_form .query-form-addtional-hidden-fields input:hidden').serialize()); return false;" class="icon icon-save save-link button" title="By clicking save this filter for further use." back_url="/change_deadlines?set_filter=1">Save</a>
+    <%= link_to l(:button_clear), { :set_filter => 1, :sort => '', :project_id => @project }, :class => 'icon icon-reload clear-link button-negative'  %>
+    <% if @query.new_record? %>
+      <% if User.current.allowed_to?(:save_queries, @project, :global => true) %>
+        <%= link_to_function l(:button_save),
+                             "$('#query_type').prop('disabled',false);$('#query_form').attr('action', '#{ @project ? new_project_query_path(@project) : new_query_path }').submit()",
+                             :class => "icon icon-save save-link button" %>
+      <% end %>
+    <% else %>
+      <% if @query.editable_by?(User.current) %>
+        <%= link_to l(:button_edit), edit_query_path(@query), :class => 'icon icon-edit button-positive' %>
+        <%= delete_link_query query_path(@query) %>
+      <% end %>
+    <% end %>
   </p>
 
 </div>
