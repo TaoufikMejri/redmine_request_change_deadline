@@ -17,3 +17,4 @@ en:
   #label_my_queries_html: "<a class='icon icon-filter button' href='#'>My custom filters</a>"
   button_approve: Approve
   button_reject: Reject
+  text_request_destroy_confirmation: Are you sure you want to delete the selected request?

@@ -1,17 +1,51 @@
+<% @cf_setting = Setting.plugin_redmine_request_change_deadline['custom_field'] %>
+
 <h2><%= l('new_request') %></h2>
 
 <%= form_for @request, url: new_change_deadline_path, method: :post do |f| %>
-  <% @issues.each do |issue| %>
-    <p>
-      <span > <%= check_box_tag 'issue_ids[]', issue.id, true %></span>
-      <%= link_to_issue issue %>
-    </p>
-  <% end %>
-  <%= render partial: 'change_deadlines/form', locals: {f: f, request: @request} %>
+  <div class="autoscroll">
+    <table class="list issues odd-even">
+      <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Task Name</th>
+        <th>Status</th>
+        <th>Subject</th>
+        <th>Assignee</th>
+        <th>% Done</th>
+        <th>Spent time</th>
+        <th>Due date</th>
+        <th>Old deadline</th>
+        <th>New deadline</th>
+        <th>Reason</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% issues = Issue.find params[:issue_ids] %>
+      <% issues.each do |issue| %>
+        <% cfv = issue.custom_values.detect { |cv|
+          cv.custom_field_id == @cf_setting.first.to_i
+        } %>
+        <tr>
+          <td><%= link_to_project issue.project %></td>
+          <td><%= link_to_issue issue %></td>
+          <td><%= issue.status %></td>
+          <td><%= issue.subject %></td>
+          <td><%= issue.assigned_to %></td>
+          <td><%= issue.done_ratio %></td>
+          <td><%= issue.spent_hours %></td>
+          <td><%= issue.due_date %></td>
+          <td><%= cfv %></td>
+          <td><%= date_field_tag "new_deadline[#{issue.id}]" %></td>
+          <td><%= text_field_tag "reason[#{issue.id}]" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding: 10px;" class="filter-buttons">
+    <%= submit_tag "Save", :class => 'icon icon-checked apply-link button-positive' %>
+    <%#= submit_tag "Submit", :class => 'icon icon-save save-link button', :style => "margin-left: 10px;" %>
+  </div>
 
-  <%#= f.label :reason, 'Reason of request' %>
-<!--  <%#= f.text_field :reason %><br>-->
-  <%#= f.label :new_deadline, 'New deadline' %>
-<!--  <%#= f.date_field :new_deadline %><br>-->
-  <%#= f.submit :value => "Save" %>
 <% end %>

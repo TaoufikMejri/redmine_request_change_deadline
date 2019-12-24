@@ -1,5 +1,44 @@
+<% @cf_setting = Setting.plugin_redmine_request_change_deadline['custom_field'] %>
+
 <h2>Edit request change deadline</h2>
 
-<%= form_for @request, url: edit_change_deadline_path do |f| %>
-  <%= render :partial => 'change_deadlines/form', :locals => {f: f, request: @request} %>
+<%= form_for @request, url: edit_change_deadline_path, method: :patch do |f| %>
+  <div class="autoscroll">
+    <table class="list issues odd-even">
+      <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Task Name</th>
+        <th>Status</th>
+        <th>Subject</th>
+        <th>Assignee</th>
+        <th>% Done</th>
+        <th>Spent time</th>
+        <th>Due date</th>
+        <th>Old deadline</th>
+        <th>New deadline</th>
+        <th>Reason</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= link_to_project @request.issue.project %></td>
+          <td><%= link_to_issue @request.issue %></td>
+          <td><%= @request.issue.status %></td>
+          <td><%= @request.issue.subject %></td>
+          <td><%= @request.issue.assigned_to %></td>
+          <td><%= @request.issue.done_ratio %></td>
+          <td><%= @request.issue.spent_hours %></td>
+          <td><%= @request.issue.due_date %></td>
+          <td><%= @request.old_deadline %></td>
+          <td><%= f.date_field :new_deadline %></td>
+          <td><%= f.text_field :reason %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding: 10px;" class="filter-buttons">
+    <%= f.submit "Save", :class => 'icon icon-checked apply-link button-positive' %>
+  </div>
 <% end %>
+

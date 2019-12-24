@@ -1,0 +1,23 @@
+<ul>
+  <% if User.current.allowed_to_globally?(:edit_deadline_request, {}) %>
+    <li><%= context_menu_link l(:button_edit), bulk_edit_change_deadlines_path(:ids => @request_ids),
+                              :class => 'icon icon-edit' %></li>
+  <% end %>
+
+  <% if User.current.allowed_to_globally?(:delete_deadline_request, {}) %>
+    <li><%= context_menu_link l(:button_delete), change_deadlines_path(:id => @request_ids, :back_url => @back),
+                              :method => :delete, :data => {:confirm => l(:text_request_destroy_confirmation)}, :class => 'icon icon-del' %></li>
+  <% end %>
+
+  <% if User.current.allowed_to_globally?(:approve_deadline_request, {}) %>
+    <li><%= context_menu_link l(:approve_deadline_request), approve_request_change_deadlines_path(:ids => @request_ids),
+                              :class => 'icon icon-save' %></li>
+  <% end %>
+
+  <% if User.current.allowed_to_globally?(:reject_deadline_request, {}) %>
+    <li><%= context_menu_link l(:reject_deadline_request), reject_request_change_deadlines_path(:ids => @request_ids),
+                              :class => 'icon icon-del' %></li>
+  <% end %>
+</ul>
+
+

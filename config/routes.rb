@@ -1,7 +1,7 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 
-resources :change_deadlines
+#resources :change_deadlines
 #post 'change_deadlines/new', :controller => 'change_deadlines', :action => 'create'
 match '/change_deadlines/context_menu', :to => 'context_menus#requests', :as => 'requests_context_menu', :via => [:get, :post]
 post 'change_deadlines/new', to: 'change_deadlines#create'
@@ -10,3 +10,13 @@ post '/change_deadlines/:id/approve_request', to: 'change_deadlines#approve_requ
 get '/change_deadlines/:id/approve_request', to: 'change_deadlines#approve_request'
 post '/change_deadlines/:id/reject_request', to: 'change_deadlines#reject_request', :as => 'reject_request'
 get '/change_deadlines/:id/reject_request', to: 'change_deadlines#reject_request'
+match '/change_deadlines', :controller => 'change_deadlines', :action => 'destroy', :via => :delete
+
+resources :change_deadlines do
+  collection do
+    match 'bulk_edit', :via => [:get, :post]
+    match 'approve_request', :via => [:get, :post]
+    match 'reject_request', :via => [:get, :post]
+    post 'bulk_update'
+  end
+end
